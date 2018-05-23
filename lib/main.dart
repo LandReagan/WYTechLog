@@ -16,11 +16,6 @@ class Home extends StatelessWidget {
     return new Scaffold(
       appBar: new AppBar(
         title: new Text('WY Techlog v0.2 alpha'),
-        actions: <Widget>[
-          new RaisedButton(
-            child: const Text('RESET'),
-          ),
-        ],
       ),
       body: techlogtable,
       bottomNavigationBar: new Container(
@@ -70,6 +65,7 @@ class _TechlogTableState extends State<TechLogTable> {
     _total_onboard = null;
     _actual_uplift = null;
     _discrepancy = null;
+    _calculate();
   }
 
   void _calculate() {
@@ -123,27 +119,40 @@ class _TechlogTableState extends State<TechLogTable> {
       onTap: _calculate,
       child: new ListView(
         children: <Widget>[
+          new RaisedButton(
+            onPressed: reset,
+            child: new Text("Tap here to RESET!"),
+          ),
           new TechLogLine('ARRIVAL FUEL (KG)', 'A', _arrival_fuel,
-              Colors.amberAccent, _update_arrival_fuel),
+              Colors.amberAccent, _update_arrival_fuel
+          ),
           new TechLogLine('FUEL FIG BEFORE REFUELING (KG)', 'B', _fuel_before,
-              Colors.white, _update_fuel_before),
+              Colors.white, _update_fuel_before
+          ),
           new TechLogLine('FUEL USED ON GROUNG (KGs) (A-B)', 'C', _fuel_used,
-              Colors.white30, null),
+              Colors.white30, null
+          ),
           new TechLogLine('TOTAL REQUIRED DEPARTURE FUEL (KGs)', 'D',
-              _total_required, Colors.amberAccent, _update_total_required),
+              _total_required, Colors.amberAccent, _update_total_required
+          ),
           new TechLogLine('METERED FUEL (LTs)', 'E', _metered_fuel,
-              Colors.white, _update_metered_fuel),
+              Colors.white, _update_metered_fuel
+          ),
           new TechLogLine('REFUELING S.G.', 'F', _sg, Colors.white, _update_sg),
           new TechLogLine('CONVERSION FACTOR', 'G', _conversion_factor,
-              Colors.white30, null),
+              Colors.white30, null
+          ),
           new TechLogLine('METERED UPLIFT (KGs) (E:G)', 'H', _metered_uplift,
-              Colors.white30, null),
+              Colors.white30, null
+          ),
           new TechLogLine('TOTAL ONBOARD (KGs) ECAM/EICAS', 'I', _total_onboard,
-              Colors.white, _update_total_onboard),
+              Colors.white, _update_total_onboard
+          ),
           new TechLogLine(
               'ACTUAL UPLIFT (I-B)', 'J', _actual_uplift, Colors.white30, null),
           new TechLogLine('DISCREPANCY (H-J)/J X 100', 'K', _discrepancy,
-              Colors.white30, null),
+              Colors.white30, null
+          ),
         ],
       ),
     );
@@ -160,6 +169,16 @@ class TechLogLine extends StatelessWidget {
   final value;
   final Color color;
   final onNewValue;
+
+  String formatValue() {
+    if (reference_letter == 'F' || reference_letter == 'G') {
+      return value.toStringAsFixed(3);
+    } else if (reference_letter == 'K') {
+      return value.toStringAsFixed(1);
+    } else {
+      return value.toStringAsFixed(0);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -185,7 +204,7 @@ class TechLogLine extends StatelessWidget {
           new Expanded(
             child: TextField(
                 controller: new TextEditingController(
-                  text: value != null ? value.toString() : '',
+                  text: value != null ? formatValue() : '',
                 ),
                 decoration: new InputDecoration(
                   filled: true,
