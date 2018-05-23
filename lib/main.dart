@@ -8,11 +8,8 @@ void main() {
 }
 
 class Home extends StatelessWidget {
-  TechLogTable techlogtable = new TechLogTable();
 
-  void _reset() {
-    techlogtable = new TechLogTable();
-  }
+  TechLogTable techlogtable = new TechLogTable();
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +18,6 @@ class Home extends StatelessWidget {
         title: new Text('WY Techlog v0.2 alpha'),
         actions: <Widget>[
           new RaisedButton(
-            onPressed: _reset,
             child: const Text('RESET'),
           ),
         ],
@@ -43,11 +39,13 @@ class Home extends StatelessWidget {
 }
 
 class TechLogTable extends StatefulWidget {
+
   @override
   _TechlogTableState createState() => new _TechlogTableState();
 }
 
 class _TechlogTableState extends State<TechLogTable> {
+
   int _arrival_fuel;
   int _fuel_before;
   int _fuel_used;
@@ -153,6 +151,7 @@ class _TechlogTableState extends State<TechLogTable> {
 }
 
 class TechLogLine extends StatelessWidget {
+
   TechLogLine(this.title, this.reference_letter, this.value, this.color,
       this.onNewValue);
 
